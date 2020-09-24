@@ -217,6 +217,7 @@ public class KeyHandler implements DeviceKeyHandler {
                     launchCamera();
                     break;
                 case TouchscreenGestureConstants.ACTION_FLASHLIGHT:
+                    doHapticFeedback();
                     toggleFlashlight();
                     break;
                 case TouchscreenGestureConstants.ACTION_BROWSER:
@@ -379,12 +380,14 @@ public class KeyHandler implements DeviceKeyHandler {
 
     private void doHapticFeedback() {
         if (mVibrator == null || !mVibrator.hasVibrator()) {
+            Log.w(TAG,"Vibrator is null!");
             return;
         }
 
         if (mAudioManager.getRingerMode() != AudioManager.RINGER_MODE_SILENT) {
             final boolean enabled = LineageSettings.System.getInt(mContext.getContentResolver(),
                     LineageSettings.System.TOUCHSCREEN_GESTURE_HAPTIC_FEEDBACK, 1) != 0;
+            Log.i(TAG,"Lineage touchscreen haptic -> " + enabled);
             if (enabled) {
                 mVibrator.vibrate(VibrationEffect.createOneShot(50,
                         VibrationEffect.DEFAULT_AMPLITUDE));
