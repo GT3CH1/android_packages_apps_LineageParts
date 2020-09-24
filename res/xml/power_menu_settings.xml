@@ -26,6 +26,12 @@
         android:defaultValue="false" />
 
     <CheckBoxPreference
+        android:key="screenrecord_in_power_menu"                                    
+        android:title="@string/power_menu_screenrecord_title"
+        android:summary="@string/power_menu_screenrecord_summary"
+        android:defaultValue="false" />
+
+    <CheckBoxPreference
         android:key="airplane"
         android:title="@string/power_menu_airplane_title"
         android:defaultValue="false" />
