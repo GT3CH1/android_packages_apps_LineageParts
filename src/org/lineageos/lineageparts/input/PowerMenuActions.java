@@ -42,12 +42,12 @@ import static org.lineageos.internal.util.PowerMenuConstants.*;
 public class PowerMenuActions extends SettingsPreferenceFragment {
     final static String TAG = "PowerMenuActions";
 
-    private CheckBoxPreference mScreenshotPref;
+    private CheckBoxPreference mScreenShotPref;
+    private CheckBoxPreference mScreenRecordPref;
     private CheckBoxPreference mAirplanePref;
     private CheckBoxPreference mUsersPref;
     private CheckBoxPreference mBugReportPref;
     private CheckBoxPreference mLockDownPref;
-
     Context mContext;
     private ArrayList<String> mLocalUserConfig = new ArrayList<String>();
     private String[] mAllActions;
@@ -63,7 +63,7 @@ public class PowerMenuActions extends SettingsPreferenceFragment {
 
         for (String action : mAllActions) {
             if (action.equals(GLOBAL_ACTION_KEY_SCREENSHOT)) {
-                mScreenshotPref = findPreference(GLOBAL_ACTION_KEY_SCREENSHOT);
+                mScreenShotPref = findPreference(GLOBAL_ACTION_KEY_SCREENSHOT);
             } else if (action.equals(GLOBAL_ACTION_KEY_AIRPLANE)) {
                 mAirplanePref = findPreference(GLOBAL_ACTION_KEY_AIRPLANE);
             } else if (action.equals(GLOBAL_ACTION_KEY_USERS)) {
@@ -72,6 +72,9 @@ public class PowerMenuActions extends SettingsPreferenceFragment {
                 mBugReportPref = findPreference(GLOBAL_ACTION_KEY_BUGREPORT);
             } else if (action.equals(GLOBAL_ACTION_KEY_LOCKDOWN)) {
                 mLockDownPref = findPreference(GLOBAL_ACTION_KEY_LOCKDOWN);
+            }
+            else if (action.equals(GLOBAL_ACTION_KEY_SCREENRECORD)){
+                mScreenRecordPref = findPreference(GLOBAL_ACTION_KEY_SCREENRECORD);
             }
         }
 
@@ -82,14 +85,16 @@ public class PowerMenuActions extends SettingsPreferenceFragment {
     public void onStart() {
         super.onStart();
 
-        if (mScreenshotPref != null) {
-            mScreenshotPref.setChecked(settingsArrayContains(GLOBAL_ACTION_KEY_SCREENSHOT));
+        if (mScreenShotPref != null) {
+            mScreenShotPref.setChecked(settingsArrayContains(GLOBAL_ACTION_KEY_SCREENSHOT));
+        }
+        if (mScreenRecordPref != null) {                                                              
+            mScreenRecordPref.setChecked(settingsArrayContains(GLOBAL_ACTION_KEY_SCREENRECORD));
         }
 
         if (mAirplanePref != null) {
             mAirplanePref.setChecked(settingsArrayContains(GLOBAL_ACTION_KEY_AIRPLANE));
         }
-
         if (mUsersPref != null) {
             if (!UserHandle.MU_ENABLED || !UserManager.supportsMultipleUsers()) {
                 getPreferenceScreen().removePreference(findPreference(GLOBAL_ACTION_KEY_USERS));
@@ -120,14 +125,15 @@ public class PowerMenuActions extends SettingsPreferenceFragment {
     public boolean onPreferenceTreeClick(Preference preference) {
         boolean value;
 
-        if (preference == mScreenshotPref) {
-            value = mScreenshotPref.isChecked();
+        if (preference == mScreenShotPref) {
+            value = mScreenShotPref.isChecked();
             updateUserConfig(value, GLOBAL_ACTION_KEY_SCREENSHOT);
-
         } else if (preference == mAirplanePref) {
             value = mAirplanePref.isChecked();
             updateUserConfig(value, GLOBAL_ACTION_KEY_AIRPLANE);
-
+        } else if (preference == mScreenRecordPref){
+            value = mScreenRecordPref.isChecked();
+            updateUserConfig(value, GLOBAL_ACTION_KEY_SCREENRECORD);
         } else if (preference == mUsersPref) {
             value = mUsersPref.isChecked();
             updateUserConfig(value, GLOBAL_ACTION_KEY_USERS);
